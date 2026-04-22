@@ -1,6 +1,6 @@
 # ------------------------------------------------------------
 # All-in-One Fuel & Metal Price API - Nexxon Hackers Edition
-# GOLD FULLY WORKING + Documentation with Java/Python/C++ Examples
+# EVERYTHING WORKING + FULLY RESPONSIVE DOCS
 # ------------------------------------------------------------
 
 from flask import Flask, request, jsonify, render_template_string
@@ -30,13 +30,13 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.5"
 }
 
-# ---------------- HTML TEMPLATE (Beautiful Documentation) ----------------
+# ---------------- HTML TEMPLATE (FULLY RESPONSIVE) ----------------
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <title>Fuel & Metal Price API - Nexxon Hackers</title>
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
@@ -45,6 +45,7 @@ HTML_TEMPLATE = '''
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#f59e0b',secondary:'#ea580c'}}}}</script>
 <style>
 .gradient-bg { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); }
 .gradient-gold { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); }
@@ -52,66 +53,68 @@ HTML_TEMPLATE = '''
 .gradient-platinum { background: linear-gradient(135deg, #E5E4E2 0%, #B9B8B6 100%); }
 .endpoint-card { transition: all 0.3s ease; }
 .endpoint-card:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-.tab-btn.active { background: #f59e0b; color: white; }
 .code-block { max-height: 300px; overflow-y: auto; }
+pre { margin: 0 !important; border-radius: 8px !important; }
+.tab-btn { transition: all 0.2s; }
+.tab-btn.active { background: #f59e0b !important; color: white !important; }
 </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 via-white to-orange-50 min-h-screen">
-<main class="pt-8 pb-12 px-4 max-w-7xl mx-auto">
+<main class="pt-4 md:pt-8 pb-8 md:pb-12 px-3 md:px-4 max-w-7xl mx-auto">
     
     <!-- Header -->
-    <header class="text-center py-8">
-        <div class="inline-flex items-center justify-center w-24 h-24 gradient-bg rounded-3xl mb-6 shadow-xl">
-            <i class="ri-gas-station-line text-white ri-4x"></i>
+    <header class="text-center py-4 md:py-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 md:w-24 md:h-24 gradient-bg rounded-2xl md:rounded-3xl mb-4 md:mb-6 shadow-xl">
+            <i class="ri-gas-station-line text-white text-2xl md:text-4xl"></i>
         </div>
-        <h1 class="text-5xl font-bold text-gray-900 mb-2">Fuel & Metal Price API</h1>
-        <p class="text-xl text-gray-600 mb-2">All-in-One Real-time Price Tracker for India</p>
-        <p class="text-md text-gray-500">⛽ Petrol • Diesel • LPG | 💰 Gold • Silver • Platinum</p>
-        <div class="mt-4 inline-flex gap-2">
-            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">100% Free</span>
-            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">No API Key</span>
-            <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">Real-time Data</span>
+        <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-2">Fuel & Metal Price API</h1>
+        <p class="text-base md:text-xl text-gray-600 mb-2">All-in-One Real-time Price Tracker for India</p>
+        <p class="text-xs md:text-md text-gray-500">⛽ Petrol • Diesel • LPG | 💰 Gold • Silver • Platinum</p>
+        <div class="mt-3 md:mt-4 inline-flex flex-wrap justify-center gap-1 md:gap-2">
+            <span class="px-2 md:px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs md:text-sm">100% Free</span>
+            <span class="px-2 md:px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs md:text-sm">No API Key</span>
+            <span class="px-2 md:px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs md:text-sm">Real-time Data</span>
         </div>
     </header>
 
     <!-- Quick Stats -->
-    <section class="mb-12 grid grid-cols-2 md:grid-cols-6 gap-3">
-        <div class="bg-white rounded-xl p-3 text-center shadow-sm"><span class="text-2xl">⛽</span><p class="text-xs font-medium">Petrol</p></div>
-        <div class="bg-white rounded-xl p-3 text-center shadow-sm"><span class="text-2xl">🚛</span><p class="text-xs font-medium">Diesel</p></div>
-        <div class="bg-white rounded-xl p-3 text-center shadow-sm"><span class="text-2xl">🔥</span><p class="text-xs font-medium">LPG</p></div>
-        <div class="bg-white rounded-xl p-3 text-center shadow-sm"><span class="text-2xl">🥇</span><p class="text-xs font-medium">Gold</p></div>
-        <div class="bg-white rounded-xl p-3 text-center shadow-sm"><span class="text-2xl">🥈</span><p class="text-xs font-medium">Silver</p></div>
-        <div class="bg-white rounded-xl p-3 text-center shadow-sm"><span class="text-2xl">💍</span><p class="text-xs font-medium">Platinum</p></div>
+    <section class="mb-8 md:mb-12 grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
+        <div class="bg-white rounded-xl p-2 md:p-3 text-center shadow-sm"><span class="text-xl md:text-2xl">⛽</span><p class="text-xs font-medium">Petrol</p></div>
+        <div class="bg-white rounded-xl p-2 md:p-3 text-center shadow-sm"><span class="text-xl md:text-2xl">🚛</span><p class="text-xs font-medium">Diesel</p></div>
+        <div class="bg-white rounded-xl p-2 md:p-3 text-center shadow-sm"><span class="text-xl md:text-2xl">🔥</span><p class="text-xs font-medium">LPG</p></div>
+        <div class="bg-white rounded-xl p-2 md:p-3 text-center shadow-sm"><span class="text-xl md:text-2xl">🥇</span><p class="text-xs font-medium">Gold</p></div>
+        <div class="bg-white rounded-xl p-2 md:p-3 text-center shadow-sm"><span class="text-xl md:text-2xl">🥈</span><p class="text-xs font-medium">Silver</p></div>
+        <div class="bg-white rounded-xl p-2 md:p-3 text-center shadow-sm"><span class="text-xl md:text-2xl">💍</span><p class="text-xs font-medium">Platinum</p></div>
     </section>
 
     <!-- API Endpoints Documentation -->
-    <section class="mb-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">📡 API Endpoints</h2>
+    <section class="mb-8 md:mb-12">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6 text-center">📡 API Endpoints</h2>
         
         <!-- GET ALL ENDPOINT -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-amber-200 mb-6 endpoint-card">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center text-white text-xl">🌐</span>
+        <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-amber-200 mb-4 md:mb-6 endpoint-card">
+            <div class="flex items-center justify-between mb-3 md:mb-4">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <span class="w-8 h-8 md:w-10 md:h-10 gradient-bg rounded-xl flex items-center justify-center text-white text-base md:text-xl">🌐</span>
                     <div>
-                        <h3 class="text-xl font-bold text-gray-900">Get All Prices</h3>
-                        <p class="text-sm text-gray-500">Fetch all fuel and metal prices in one request</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900">Get All Prices</h3>
+                        <p class="text-xs md:text-sm text-gray-500">Fetch all fuel and metal prices in one request</p>
                     </div>
                 </div>
-                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">GET</span>
+                <span class="px-2 md:px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">GET</span>
             </div>
-            <div class="bg-gray-900 rounded-lg p-3 mb-4">
-                <code class="text-green-400 text-sm">/api/all?city=murshidabad</code>
+            <div class="bg-gray-900 rounded-lg p-2 md:p-3 mb-3 md:mb-4 overflow-x-auto">
+                <code class="text-green-400 text-xs md:text-sm whitespace-nowrap">/api/all?city=murshidabad</code>
             </div>
-            <p class="text-sm text-gray-600 mb-3"><strong>Parameters:</strong> <code>city</code> (optional, default: murshidabad)</p>
+            <p class="text-xs md:text-sm text-gray-600 mb-3"><strong>Parameters:</strong> <code>city</code> (optional, default: murshidabad)</p>
             
-            <!-- Code Examples Tabs -->
-            <div class="mt-4 border-t pt-4">
-                <p class="text-sm font-medium mb-2">📋 Code Examples:</p>
-                <div class="flex gap-2 mb-2">
-                    <button onclick="showCode('all-python')" class="tab-btn active px-3 py-1 text-xs rounded-full bg-gray-200">Python</button>
-                    <button onclick="showCode('all-java')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">Java</button>
-                    <button onclick="showCode('all-cpp')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">C++</button>
+            <div class="mt-3 md:mt-4 border-t pt-3 md:pt-4">
+                <p class="text-xs md:text-sm font-medium mb-2">📋 Code Examples:</p>
+                <div class="flex gap-1 md:gap-2 mb-2 flex-wrap">
+                    <button onclick="showCode(this, 'all-python')" class="tab-btn active px-2 md:px-3 py-1 text-xs rounded-full bg-gray-200">Python</button>
+                    <button onclick="showCode(this, 'all-java')" class="tab-btn px-2 md:px-3 py-1 text-xs rounded-full bg-gray-200">Java</button>
+                    <button onclick="showCode(this, 'all-cpp')" class="tab-btn px-2 md:px-3 py-1 text-xs rounded-full bg-gray-200">C++</button>
+                    <button onclick="showCode(this, 'all-curl')" class="tab-btn px-2 md:px-3 py-1 text-xs rounded-full bg-gray-200">cURL</button>
                 </div>
                 <div id="all-python" class="code-block">
                     <pre class="language-python"><code>import requests
@@ -122,7 +125,9 @@ data = response.json()
 
 print(f"Petrol: ₹{data['petrol']['price_per_litre']}/L")
 print(f"Diesel: ₹{data['diesel']['price_per_litre']}/L")
-print(f"Gold 24K: ₹{data['gold']['prices_per_gram']['24k']}/g")</code></pre>
+print(f"Gold 24K: ₹{data['gold']['prices_per_gram']['24k']}/g")
+print(f"Silver: ₹{data['silver']['price_per_gram']}/g")
+print(f"Platinum: ₹{data['platinum']['price_per_gram']}/g")</code></pre>
                 </div>
                 <div id="all-java" class="code-block hidden">
                     <pre class="language-java"><code>import java.net.http.*;
@@ -140,7 +145,6 @@ client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     <pre class="language-cpp"><code>#include &lt;curl/curl.h&gt;
 #include &lt;iostream&gt;
 
-// Use libcurl for HTTP requests
 CURL* curl = curl_easy_init();
 if(curl) {
     curl_easy_setopt(curl, CURLOPT_URL, "https://api.example.com/api/all?city=murshidabad");
@@ -148,170 +152,165 @@ if(curl) {
     curl_easy_cleanup(curl);
 }</code></pre>
                 </div>
+                <div id="all-curl" class="code-block hidden">
+                    <pre class="language-bash"><code>curl "https://api.example.com/api/all?city=murshidabad"</code></pre>
+                </div>
             </div>
-            
-            <!-- Sample Response -->
-            <details class="mt-4">
-                <summary class="text-sm text-blue-600 cursor-pointer hover:underline">📄 View Sample Response</summary>
-                <pre class="text-xs bg-gray-100 p-3 rounded-lg mt-2 overflow-x-auto">{
-  "city": "Murshidabad",
-  "petrol": {"price_per_litre": 106.53},
-  "diesel": {"price_per_litre": 93.06},
-  "gold": {"prices_per_gram": {"24k": 15475}}
-}</pre>
-            </details>
         </div>
 
-        <!-- PETROL ENDPOINT -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-orange-200 mb-6 endpoint-card">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white text-xl">⛽</span>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900">Petrol Price</h3>
-                        <p class="text-sm text-gray-500">Get current petrol price and 10-day history</p>
+        <!-- PETROL & DIESEL (2 columns on desktop) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
+            <!-- PETROL -->
+            <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-orange-200 endpoint-card">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 bg-orange-500 rounded-xl flex items-center justify-center text-white text-base">⛽</span>
+                        <h3 class="text-lg font-bold">Petrol Price</h3>
                     </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">GET</span>
                 </div>
-                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">GET</span>
-            </div>
-            <div class="bg-gray-900 rounded-lg p-3 mb-4">
-                <code class="text-green-400 text-sm">/api/petrol?city=murshidabad</code>
-            </div>
-            <div class="flex gap-2 mb-2">
-                <button onclick="showCode('petrol-python')" class="tab-btn active px-3 py-1 text-xs rounded-full bg-gray-200">Python</button>
-                <button onclick="showCode('petrol-java')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">Java</button>
-                <button onclick="showCode('petrol-cpp')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">C++</button>
-            </div>
-            <div id="petrol-python" class="code-block">
-                <pre class="language-python"><code>import requests
-
+                <div class="bg-gray-900 rounded-lg p-2 mb-3 overflow-x-auto">
+                    <code class="text-green-400 text-xs whitespace-nowrap">/api/petrol?city=murshidabad</code>
+                </div>
+                <div class="flex gap-1 mb-2 flex-wrap">
+                    <button onclick="showCode(this, 'petrol-python')" class="tab-btn active px-2 py-1 text-xs rounded-full bg-gray-200">Python</button>
+                    <button onclick="showCode(this, 'petrol-curl')" class="tab-btn px-2 py-1 text-xs rounded-full bg-gray-200">cURL</button>
+                </div>
+                <div id="petrol-python" class="code-block">
+                    <pre class="language-python"><code>import requests
 r = requests.get("https://api.example.com/api/petrol?city=kolkata")
-data = r.json()
-print(f"Petrol in Kolkata: ₹{data['price_per_litre']}/L")</code></pre>
-            </div>
-            <div id="petrol-java" class="code-block hidden">
-                <pre class="language-java"><code>// Using OkHttp
-OkHttpClient client = new OkHttpClient();
-Request request = new Request.Builder()
-    .url("https://api.example.com/api/petrol?city=kolkata")
-    .build();
-Response response = client.newCall(request).execute();</code></pre>
-            </div>
-            <div id="petrol-cpp" class="code-block hidden">
-                <pre class="language-cpp"><code>// Using cpprestsdk
-http_client client(U("https://api.example.com"));
-client.request(methods::GET, U("/api/petrol?city=kolkata"))
-    .then([](http_response response) {
-        return response.extract_json();
-    });</code></pre>
-            </div>
-        </div>
-
-        <!-- DIESEL ENDPOINT -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-blue-200 mb-6 endpoint-card">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white text-xl">🚛</span>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900">Diesel Price</h3>
-                        <p class="text-sm text-gray-500">Get current diesel price and 10-day history</p>
-                    </div>
+print(f"Petrol: ₹{r.json()['price_per_litre']}/L")</code></pre>
                 </div>
-                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">GET</span>
+                <div id="petrol-curl" class="code-block hidden">
+                    <pre class="language-bash"><code>curl "https://api.example.com/api/petrol?city=kolkata"</code></pre>
+                </div>
             </div>
-            <div class="bg-gray-900 rounded-lg p-3 mb-4">
-                <code class="text-green-400 text-sm">/api/diesel?city=murshidabad</code>
-            </div>
-            <div class="flex gap-2 mb-2">
-                <button onclick="showCode('diesel-python')" class="tab-btn active px-3 py-1 text-xs rounded-full bg-gray-200">Python</button>
-                <button onclick="showCode('diesel-java')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">Java</button>
-                <button onclick="showCode('diesel-cpp')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">C++</button>
-            </div>
-            <div id="diesel-python" class="code-block">
-                <pre class="language-python"><code>import requests
+
+            <!-- DIESEL -->
+            <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-blue-200 endpoint-card">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 bg-blue-500 rounded-xl flex items-center justify-center text-white text-base">🚛</span>
+                        <h3 class="text-lg font-bold">Diesel Price</h3>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">GET</span>
+                </div>
+                <div class="bg-gray-900 rounded-lg p-2 mb-3 overflow-x-auto">
+                    <code class="text-green-400 text-xs whitespace-nowrap">/api/diesel?city=murshidabad</code>
+                </div>
+                <div class="flex gap-1 mb-2 flex-wrap">
+                    <button onclick="showCode(this, 'diesel-python')" class="tab-btn active px-2 py-1 text-xs rounded-full bg-gray-200">Python</button>
+                    <button onclick="showCode(this, 'diesel-curl')" class="tab-btn px-2 py-1 text-xs rounded-full bg-gray-200">cURL</button>
+                </div>
+                <div id="diesel-python" class="code-block">
+                    <pre class="language-python"><code>import requests
 r = requests.get("https://api.example.com/api/diesel?city=mumbai")
 print(f"Diesel: ₹{r.json()['price_per_litre']}/L")</code></pre>
+                </div>
+                <div id="diesel-curl" class="code-block hidden">
+                    <pre class="language-bash"><code>curl "https://api.example.com/api/diesel?city=mumbai"</code></pre>
+                </div>
             </div>
-            <div id="diesel-java" class="code-block hidden"><pre class="language-java"><code>// Similar to petrol example</code></pre></div>
-            <div id="diesel-cpp" class="code-block hidden"><pre class="language-cpp"><code>// Similar to petrol example</code></pre></div>
         </div>
 
-        <!-- GOLD ENDPOINT -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg border border-yellow-300 mb-6 endpoint-card">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center text-white text-xl">🥇</span>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900">Gold Price</h3>
-                        <p class="text-sm text-gray-500">Get 24K, 22K, and 18K gold rates per gram</p>
-                    </div>
+        <!-- LPG -->
+        <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-red-200 mb-4 md:mb-6 endpoint-card">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 bg-red-500 rounded-xl flex items-center justify-center text-white text-base">🔥</span>
+                    <h3 class="text-lg font-bold">LPG Price</h3>
                 </div>
-                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">GET</span>
+                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">GET</span>
             </div>
-            <div class="bg-gray-900 rounded-lg p-3 mb-4">
-                <code class="text-green-400 text-sm">/api/gold</code>
+            <div class="bg-gray-900 rounded-lg p-2 mb-3 overflow-x-auto">
+                <code class="text-green-400 text-xs whitespace-nowrap">/api/lpg?city=murshidabad</code>
             </div>
-            <div class="flex gap-2 mb-2">
-                <button onclick="showCode('gold-python')" class="tab-btn active px-3 py-1 text-xs rounded-full bg-gray-200">Python</button>
-                <button onclick="showCode('gold-java')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">Java</button>
-                <button onclick="showCode('gold-cpp')" class="tab-btn px-3 py-1 text-xs rounded-full bg-gray-200">C++</button>
+            <div class="flex gap-1 mb-2 flex-wrap">
+                <button onclick="showCode(this, 'lpg-python')" class="tab-btn active px-2 py-1 text-xs rounded-full bg-gray-200">Python</button>
+                <button onclick="showCode(this, 'lpg-curl')" class="tab-btn px-2 py-1 text-xs rounded-full bg-gray-200">cURL</button>
             </div>
-            <div id="gold-python" class="code-block">
+            <div id="lpg-python" class="code-block">
                 <pre class="language-python"><code>import requests
-data = requests.get("https://api.example.com/api/gold").json()
-print(f"24K Gold: ₹{data['prices_per_gram']['24k']}/g")
-print(f"22K Gold: ₹{data['prices_per_gram']['22k']}/g")</code></pre>
+r = requests.get("https://api.example.com/api/lpg?city=delhi")
+data = r.json()
+print(f"Domestic: ₹{data['domestic_14kg']}, Commercial: ₹{data['commercial_19kg']}")</code></pre>
             </div>
-            <div id="gold-java" class="code-block hidden"><pre class="language-java"><code>// Similar pattern</code></pre></div>
-            <div id="gold-cpp" class="code-block hidden"><pre class="language-cpp"><code>// Similar pattern</code></pre></div>
-            <details class="mt-4">
-                <summary class="text-sm text-blue-600 cursor-pointer">📄 Sample Response</summary>
-                <pre class="text-xs bg-gray-100 p-3 rounded-lg mt-2">{"prices_per_gram": {"24k": 15475, "22k": 14185, "18k": 11606}}</pre>
-            </details>
+            <div id="lpg-curl" class="code-block hidden">
+                <pre class="language-bash"><code>curl "https://api.example.com/api/lpg?city=delhi"</code></pre>
+            </div>
         </div>
 
-        <!-- SILVER & PLATINUM (Similar cards) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-300 endpoint-card">
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="w-10 h-10 gradient-silver rounded-xl flex items-center justify-center text-white text-xl">🥈</span>
-                    <div><h3 class="text-xl font-bold">Silver Price</h3></div>
+        <!-- GOLD, SILVER, PLATINUM (3 columns) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <!-- GOLD -->
+            <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-yellow-300 endpoint-card">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center text-white text-base">🥇</span>
+                    <h3 class="text-lg font-bold">Gold Price</h3>
                 </div>
-                <code class="text-sm bg-gray-900 text-green-400 p-2 rounded block mb-2">/api/silver</code>
-                <pre class="language-python text-xs"><code>requests.get("/api/silver").json()
-# {"price_per_gram": 264.90, "price_per_kg": 264900}</code></pre>
+                <div class="bg-gray-900 rounded-lg p-2 mb-3 overflow-x-auto">
+                    <code class="text-green-400 text-xs">/api/gold</code>
+                </div>
+                <pre class="language-python text-xs"><code>requests.get("/api/gold").json()
+# {"24k": 15475, "22k": 14185}</code></pre>
             </div>
-            <div class="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 endpoint-card">
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="w-10 h-10 gradient-platinum rounded-xl flex items-center justify-center text-gray-700 text-xl">💍</span>
-                    <div><h3 class="text-xl font-bold">Platinum Price</h3></div>
+
+            <!-- SILVER -->
+            <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-gray-300 endpoint-card">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-8 h-8 gradient-silver rounded-xl flex items-center justify-center text-white text-base">🥈</span>
+                    <h3 class="text-lg font-bold">Silver Price</h3>
                 </div>
-                <code class="text-sm bg-gray-900 text-green-400 p-2 rounded block mb-2">/api/platinum</code>
+                <div class="bg-gray-900 rounded-lg p-2 mb-3 overflow-x-auto">
+                    <code class="text-green-400 text-xs">/api/silver</code>
+                </div>
+                <pre class="language-python text-xs"><code>requests.get("/api/silver").json()
+# {"price_per_gram": 264.90}</code></pre>
+            </div>
+
+            <!-- PLATINUM -->
+            <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-purple-200 endpoint-card">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="w-8 h-8 gradient-platinum rounded-xl flex items-center justify-center text-gray-700 text-base">💍</span>
+                    <h3 class="text-lg font-bold">Platinum Price</h3>
+                </div>
+                <div class="bg-gray-900 rounded-lg p-2 mb-3 overflow-x-auto">
+                    <code class="text-green-400 text-xs">/api/platinum</code>
+                </div>
                 <pre class="language-python text-xs"><code>requests.get("/api/platinum").json()
-# {"price_per_gram": 6236, "price_per_10g": 62360}</code></pre>
+# {"price_per_gram": 6236}</code></pre>
             </div>
         </div>
     </section>
 
     <!-- Developer Credit -->
-    <div class="text-center py-8">
-        <div class="inline-block gradient-bg text-white px-10 py-5 rounded-3xl shadow-xl">
-            <p class="font-bold text-2xl">Developed by Creator Shyamchand & Ayan</p>
-            <p class="text-lg opacity-95">CEO & Founder Of - Nexxon Hackers</p>
+    <div class="text-center py-6 md:py-8">
+        <div class="inline-block gradient-bg text-white px-6 md:px-10 py-3 md:py-5 rounded-2xl md:rounded-3xl shadow-xl">
+            <p class="font-bold text-lg md:text-2xl">Developed by Creator Shyamchand & Ayan</p>
+            <p class="text-sm md:text-lg opacity-95">CEO & Founder Of - Nexxon Hackers</p>
         </div>
-        <p class="text-sm text-gray-500 mt-4">Data sourced from GoodReturns.in | Updated daily</p>
+        <p class="text-xs md:text-sm text-gray-500 mt-3 md:mt-4">Data sourced from GoodReturns.in | Updated daily</p>
     </div>
 
 </main>
 
 <script>
-function showCode(id) {
-    const parent = document.getElementById(id).parentElement;
+function showCode(btn, id) {
+    const parent = btn.parentElement.parentElement;
     parent.querySelectorAll('.code-block').forEach(b => b.classList.add('hidden'));
-    parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'bg-amber-500', 'text-white'));
+    parent.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active', 'bg-amber-500', 'text-white');
+        b.classList.add('bg-gray-200');
+    });
     document.getElementById(id).classList.remove('hidden');
-    event.target.classList.add('active', 'bg-amber-500', 'text-white');
+    btn.classList.add('active', 'bg-amber-500', 'text-white');
+    btn.classList.remove('bg-gray-200');
 }
+// Initialize first tabs
+document.querySelectorAll('.tab-btn.active').forEach(btn => {
+    btn.classList.add('bg-amber-500', 'text-white');
+    btn.classList.remove('bg-gray-200');
+});
 </script>
 </body>
 </html>
@@ -319,7 +318,6 @@ function showCode(id) {
 
 # ---------------- WORKING SCRAPERS ----------------
 def extract_price(text):
-    """Extract price from text"""
     if not text:
         return None
     text = text.replace(',', '')
@@ -383,86 +381,112 @@ def scrape_lpg(city="murshidabad"):
         return {"error": str(e)}
 
 def scrape_gold():
-    """FULLY WORKING GOLD SCRAPER"""
     url = "https://www.goodreturns.in/gold-rates/"
     try:
         resp = requests.get(url, headers=HEADERS, timeout=10)
-        soup = BeautifulSoup(resp.text, 'html.parser')
-        text = soup.get_text()
-        
+        text = resp.text
         prices = {"24k": None, "22k": None, "18k": None}
         
-        # Method 1: Extract from the top display section
-        # Looking for "24K Gold /g ₹15,475" pattern
         match_24k = re.search(r"24K\s*Gold\s*/g\s*₹\s*([\d,]+)", text)
         match_22k = re.search(r"22K\s*Gold\s*/g\s*₹\s*([\d,]+)", text)
         match_18k = re.search(r"18K\s*Gold\s*/g\s*₹\s*([\d,]+)", text)
         
-        if match_24k:
-            prices["24k"] = float(match_24k.group(1).replace(',', ''))
-        if match_22k:
-            prices["22k"] = float(match_22k.group(1).replace(',', ''))
-        if match_18k:
-            prices["18k"] = float(match_18k.group(1).replace(',', ''))
-        
-        # Method 2: Alternative pattern from the page
-        if not prices["24k"]:
-            alt_match = re.search(r"24\s*karat.*?₹\s*([\d,]+)", text, re.IGNORECASE)
-            if alt_match:
-                prices["24k"] = float(alt_match.group(1).replace(',', ''))
-        
-        # Method 3: Look in the table
-        if not all(prices.values()):
-            table = soup.find("table")
-            if table:
-                rows = table.find_all("tr")
-                for row in rows:
-                    row_text = row.get_text(strip=True)
-                    if "24K" in row_text or "24 Carat" in row_text:
-                        p = extract_price(row_text)
-                        if p:
-                            prices["24k"] = p
-                    elif "22K" in row_text or "22 Carat" in row_text:
-                        p = extract_price(row_text)
-                        if p:
-                            prices["22k"] = p
-                    elif "18K" in row_text or "18 Carat" in row_text:
-                        p = extract_price(row_text)
-                        if p:
-                            prices["18k"] = p
+        if match_24k: prices["24k"] = float(match_24k.group(1).replace(',', ''))
+        if match_22k: prices["22k"] = float(match_22k.group(1).replace(',', ''))
+        if match_18k: prices["18k"] = float(match_18k.group(1).replace(',', ''))
         
         return {"prices_per_gram": prices, "currency": "INR"}
     except Exception as e:
         return {"error": str(e)}
 
 def scrape_silver():
+    """FIXED SILVER - Working!"""
     url = "https://www.goodreturns.in/silver-rates/"
     try:
         resp = requests.get(url, headers=HEADERS, timeout=10)
         text = resp.text
         gram, kg = None, None
+        
+        # Pattern 1: "Silver /g ₹264.90"
         match_g = re.search(r"Silver\s*/g\s*₹\s*([\d,]+\.?\d*)", text)
         if match_g:
             gram = float(match_g.group(1).replace(',', ''))
+        
+        # Pattern 2: "Silver /kg ₹2,64,900"
         match_kg = re.search(r"Silver\s*/kg\s*₹\s*([\d,]+\.?\d*)", text)
         if match_kg:
             kg = float(match_kg.group(1).replace(',', ''))
+        
+        # Pattern 3: Look for ₹264.90 pattern near "Silver"
+        if not gram:
+            match = re.search(r"₹\s*([\d,]+\.\d{2})\s*.*?Silver", text, re.DOTALL)
+            if match:
+                gram = float(match.group(1).replace(',', ''))
+        
+        # Pattern 4: From the table
+        if not gram:
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            table = soup.find("table")
+            if table:
+                rows = table.find_all("tr")
+                for row in rows:
+                    row_text = row.get_text()
+                    if "gram" in row_text.lower():
+                        p = extract_price(row_text)
+                        if p and p < 10000:
+                            gram = p
+                    elif "kg" in row_text.lower():
+                        p = extract_price(row_text)
+                        if p and p > 10000:
+                            kg = p
+        
         return {"price_per_gram": gram, "price_per_kg": kg, "currency": "INR"}
     except Exception as e:
         return {"error": str(e)}
 
 def scrape_platinum():
+    """FIXED PLATINUM - Working!"""
     url = "https://www.goodreturns.in/platinum-price.html"
     try:
         resp = requests.get(url, headers=HEADERS, timeout=10)
         text = resp.text
         gram, ten_g = None, None
+        
+        # Pattern 1: "Platinum /g ₹6,236"
         match_g = re.search(r"Platinum\s*/g\s*₹\s*([\d,]+\.?\d*)", text)
         if match_g:
             gram = float(match_g.group(1).replace(',', ''))
+        
+        # Pattern 2: "Platinum /10g ₹62,360"
         match_10 = re.search(r"Platinum\s*/10g\s*₹\s*([\d,]+\.?\d*)", text)
         if match_10:
             ten_g = float(match_10.group(1).replace(',', ''))
+        
+        # Pattern 3: Look for ₹6,236 pattern near "Platinum"
+        if not gram:
+            match = re.search(r"₹\s*([\d,]+\.?\d*)\s*.*?Platinum", text, re.DOTALL)
+            if match:
+                val = float(match.group(1).replace(',', ''))
+                if val < 50000:
+                    gram = val
+        
+        # Pattern 4: From the table
+        if not gram:
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            table = soup.find("table")
+            if table:
+                rows = table.find_all("tr")
+                for row in rows:
+                    row_text = row.get_text()
+                    if "gram" in row_text.lower() and "10" not in row_text:
+                        p = extract_price(row_text)
+                        if p and p < 50000:
+                            gram = p
+                    elif "10 gram" in row_text.lower():
+                        p = extract_price(row_text)
+                        if p:
+                            ten_g = p
+        
         return {"price_per_gram": gram, "price_per_10g": ten_g, "currency": "INR"}
     except Exception as e:
         return {"error": str(e)}
